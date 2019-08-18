@@ -5,13 +5,17 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const router = require('./routes');
 
-// mongoose.connect(process.env.DB_URL, function(err) {
-//     if (err) {
-//         throw err;
-//     } else {
-//         console.log(`Successfully connected to ${process.env.DB_URL}`);
-//     }
-// });
+// Configure Mongo DB
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true}, (err) => {
+    if (err) {
+        throw err;
+    } else {
+        return;
+    }
+});
+mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('debug', true);
 
 // Configure body parser
 app.use(bodyParser.urlencoded({ extended: true }));
