@@ -26,19 +26,21 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-UserSchema.pre('save', (next) => {
-    // Check if document is new or a new password has been set
-    if (this.isNew | this.isModified('password')) {
-        // Saving reference to this because of changing scopes
+UserSchema.pre('save', function(next) {
+    console.log(this)
+    if (this.isNew || this.isModified('password')) {
         const document = this;
-        bcrypt.hash(document.password, saltRounds, (err, hashedPassword) => {
-            if (err) { next(err); }
-            document.password = hashedPassword;
-            next();
+        bcrypt.hash(this.password, saltRounds, function(err, hashedPassword) {
+            if (err) {
+                next(err);
+            } else {
+                document.password = hashedPassword;
+                next();
+            }
         });
     } else {
         next();
     }
-})
+});
 
 module.exports = mongoose.model('User', UserSchema);
