@@ -9,7 +9,6 @@ router.post('/register', (req, res, next) => {
     const user = new User({ id, email, password, username });
     console.log(user)
     user.save((err) => {
-        console.log(err)
         if (err) {
             return res.status(500).json({"message": "Error registering new user please try again."});
         } else {
